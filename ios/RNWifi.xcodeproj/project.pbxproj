@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		B3E7B58A1CC2AC0600A0062D /* RNWifi.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNWifi.m */; };
+		C6CC4391215B8E57005E26E4 /* libiot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6CC4390215B8E57005E26E4 /* libiot.a */; };
+		C6CC4393215B8E64005E26E4 /* libVoiceEncoder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6CC4392215B8E64005E26E4 /* libVoiceEncoder.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,6 +28,8 @@
 		134814201AA4EA6300B7C361 /* libRNWifi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNWifi.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5881CC2AC0600A0062D /* RNWifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNWifi.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RNWifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNWifi.m; sourceTree = "<group>"; };
+		C6CC4390215B8E57005E26E4 /* libiot.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiot.a; path = ../../../Dropbox/FE/OneKeyWifi/OneKeyWifi/ios_demo/OneKeyWifi/OneKeyWifi/libiot.a; sourceTree = "<group>"; };
+		C6CC4392215B8E64005E26E4 /* libVoiceEncoder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVoiceEncoder.a; path = ../../../Dropbox/FE/OneKeyWifi/OneKeyWifi/ios_demo/OneKeyWifi/OneKeyWifi/libVoiceEncoder.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +37,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6CC4391215B8E57005E26E4 /* libiot.a in Frameworks */,
+				C6CC4393215B8E64005E26E4 /* libVoiceEncoder.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,7 +59,17 @@
 				B3E7B5881CC2AC0600A0062D /* RNWifi.h */,
 				B3E7B5891CC2AC0600A0062D /* RNWifi.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				C6CC438F215B8E57005E26E4 /* Frameworks */,
 			);
+			sourceTree = "<group>";
+		};
+		C6CC438F215B8E57005E26E4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C6CC4392215B8E64005E26E4 /* libVoiceEncoder.a */,
+				C6CC4390215B8E57005E26E4 /* libiot.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -204,7 +220,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-				"$(inherited)",
+					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
