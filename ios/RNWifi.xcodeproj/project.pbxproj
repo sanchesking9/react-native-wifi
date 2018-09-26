@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		B3E7B58A1CC2AC0600A0062D /* RNWifi.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNWifi.m */; };
-		C6CC4391215B8E57005E26E4 /* libiot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6CC4390215B8E57005E26E4 /* libiot.a */; };
-		C6CC4393215B8E64005E26E4 /* libVoiceEncoder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6CC4392215B8E64005E26E4 /* libVoiceEncoder.a */; };
+		C6CC43DA215BA070005E26E4 /* libiot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6CC43D9215BA070005E26E4 /* libiot.a */; };
+		C6CC43DC215BA07E005E26E4 /* libVoiceEncoder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6CC43DB215BA07E005E26E4 /* libVoiceEncoder.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,6 +30,8 @@
 		B3E7B5891CC2AC0600A0062D /* RNWifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNWifi.m; sourceTree = "<group>"; };
 		C6CC4390215B8E57005E26E4 /* libiot.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiot.a; path = ../../../Dropbox/FE/OneKeyWifi/OneKeyWifi/ios_demo/OneKeyWifi/OneKeyWifi/libiot.a; sourceTree = "<group>"; };
 		C6CC4392215B8E64005E26E4 /* libVoiceEncoder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVoiceEncoder.a; path = ../../../Dropbox/FE/OneKeyWifi/OneKeyWifi/ios_demo/OneKeyWifi/OneKeyWifi/libVoiceEncoder.a; sourceTree = "<group>"; };
+		C6CC43D9215BA070005E26E4 /* libiot.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libiot.a; sourceTree = "<group>"; };
+		C6CC43DB215BA07E005E26E4 /* libVoiceEncoder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libVoiceEncoder.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,8 +39,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6CC4391215B8E57005E26E4 /* libiot.a in Frameworks */,
-				C6CC4393215B8E64005E26E4 /* libVoiceEncoder.a in Frameworks */,
+				C6CC43DA215BA070005E26E4 /* libiot.a in Frameworks */,
+				C6CC43DC215BA07E005E26E4 /* libVoiceEncoder.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +68,8 @@
 		C6CC438F215B8E57005E26E4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C6CC43DB215BA07E005E26E4 /* libVoiceEncoder.a */,
+				C6CC43D9215BA070005E26E4 /* libiot.a */,
 				C6CC4392215B8E64005E26E4 /* libVoiceEncoder.a */,
 				C6CC4390215B8E57005E26E4 /* libiot.a */,
 			);
@@ -225,7 +229,10 @@
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNWifi;
 				SKIP_INSTALL = YES;
@@ -241,7 +248,10 @@
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNWifi;
 				SKIP_INSTALL = YES;
