@@ -1,9 +1,9 @@
 //
-//  VoicePlayer.h
-//  VoiceEncoder
+//  voiceEncoder.h
+//  RNWifi
 //
-//  Created by godliu on 14-10-24.
-//  Copyright (c) 2014年 godliu. All rights reserved.
+//  Created by Vladyslav Frantsyan on 10/18/18.
+//  Copyright © 2018 Facebook. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

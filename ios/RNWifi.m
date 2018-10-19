@@ -1,183 +1,167 @@
+
 #import "RNWifi.h"
-#import <NetworkExtension/NetworkExtension.h>
+#import <React/RCTLog.h>
+#import "SmartLink.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
-#import "voiceEncoder.h"
-// If using official settings URL
-//#import <UIKit/UIKit.h>
 
-@implementation WifiManager
-RCT_EXPORT_MODULE();
+@implementation RNWifi
 
-RCT_EXPORT_METHOD(connectToSSID:(NSString*)ssid
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject) {
+-(void)PlayVoice
+{   _times = 0;//控制播放次数
+    NSThread *voiceThread = [[NSThread alloc]initWithTarget:self selector:@selector(VoiceThread) object:nil];
+    _voiceThread = voiceThread;
+    [voiceThread start];
     
-    if (@available(iOS 11.0, *)) {
-        NEHotspotConfiguration* configuration = [[NEHotspotConfiguration alloc] initWithSSID:ssid];
-        configuration.joinOnce = true;
-        
-        [[NEHotspotConfigurationManager sharedManager] applyConfiguration:configuration completionHandler:^(NSError * _Nullable error) {
-            if (error != nil) {
-                reject(@"nehotspot_error", @"Error while configuring WiFi", error);
-            } else {
-                resolve(nil);
-            }
-        }];
-        
-    } else {
-        reject(@"ios_error", @"Not supported in iOS<11.0", nil);
-    }
-}
-
-RCT_EXPORT_METHOD(connectToProtectedSSID:(NSString*)ssid
-                  withPassphrase:(NSString*)passphrase
-                  isWEP:(BOOL)isWEP
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject) {
+    //smartLink
+    [SmartLink StopSmartLink];
+    [SmartLink setSmartLink:MyWiFiSSID setAuthmod:@"0" setPassWord:MyPassword];
     
-    if (@available(iOS 11.0, *)) {
-        NEHotspotConfiguration* configuration = [[NEHotspotConfiguration alloc] initWithSSID:ssid passphrase:passphrase isWEP:isWEP];
-        configuration.joinOnce = true;
-        
-        [[NEHotspotConfigurationManager sharedManager] applyConfiguration:configuration completionHandler:^(NSError * _Nullable error) {
-            if (error != nil) {
-                reject(@"nehotspot_error", @"Error while configuring WiFi", error);
-            } else {
-                resolve(nil);
-            }
-        }];
-        
-    } else {
-        reject(@"ios_error", @"Not supported in iOS<11.0", nil);
-    }
-}
-
-RCT_EXPORT_METHOD(disconnectFromSSID:(NSString*)mac
-                  (NSString*)wifi
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject) {
-    
-    if (@available(iOS 11.0, *)) {
-        [[NEHotspotConfigurationManager sharedManager] getConfiguredSSIDsWithCompletionHandler:^(NSArray<NSString *> *ssids) {
-            if (ssids != nil && [ssids indexOfObject:ssid] != NSNotFound) {
-                [[NEHotspotConfigurationManager sharedManager] removeConfigurationForSSID:ssid];
-            }
-            resolve(nil);
-        }];
-    } else {
-        reject(@"ios_error", @"Not supported in iOS<11.0", nil);
-    }
     
 }
 
-RCT_EXPORT_METHOD(list
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject) {
+//获取当前WiFi名字以及Mac地址
+- (NSString *)GetCurrentWiFiSSID {
+    NSArray *ifs = (__bridge id)CNCopySupportedInterfaces();
     
-    if (@available(iOS 11.0, *)) {
-        // TODO: give list of wifi spots
-        resolve(nil);
-    } else {
-        reject(@"ios_error", @"Not supported in iOS<11.0", nil);
-    }
     
-}
-
-RCT_REMAP_METHOD(getCurrentWifiSSID,
-                 resolver:(RCTPromiseResolveBlock)resolve
-                 rejecter:(RCTPromiseRejectBlock)reject) {
-    
-    NSString *kSSID = (NSString*) kCNNetworkInfoKeySSID;
-    
-    NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
-    for (NSString *ifnam in ifs) {
-        NSDictionary *info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
-        if (info[kSSID]) {
-            resolve(info[kSSID]);
-            return;
+    id info = nil;
+    for (NSString *ifnam in ifs)
+    {
+        info = (__bridge id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
+        
+        if (info && [info count])
+        {
+            break;
         }
     }
     
-    reject(@"cannot_detect_ssid", @"Cannot detect SSID", nil);
+    NSDictionary *dctySSID = (NSDictionary* )info;
+    NSString *ssid = [dctySSID objectForKey:@"SSID"];
+    MyWiFiSSID =[[NSString alloc] initWithFormat:@"%@", ssid];
+    
+    NSString *Bssid = [dctySSID objectForKey:@"BSSID"];
+    MyWiFiMac =[[NSString alloc] initWithFormat:@"%@", Bssid];
+    NSLog(@"________%@",MyWiFiMac);
+    
+    NSString *tempSSID = [[NSString alloc] initWithFormat:@"%@+%@", ssid, Bssid];
+    
+    return tempSSID;
 }
 
-RCT_EXPORT_METHOD(sendSonic:(NSString*)ssid
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject) {
+- (void)DidLoad {
+    //1.获取当前WIFI
+    [self GetCurrentWiFiSSID];
     
-    if (@available(iOS 11.0, *)) {
-        play = [[VoiceEncoder alloc] init];
-        
-        
-        NSArray *array = [NSArray array];
-        array = [MyWiFiMac componentsSeparatedByString:@":"];
-        NSLog(@"array[4]:%@,array[5]%@",array[4],array[5]);
-        
-        NSString *str1 = [NSString string];
-        str1 = array[5];
-        
-        NSString *str = [NSString string];
-        NSString *str2 = [NSString string];
-        NSString *astr;
-        NSString *bstr;
-        NSString *cstr;
-        unsigned long red = 0;
-        unsigned long blue = 0;
-        unsigned long yellow;
-        
-        
-        if ([array[5] isEqualToString:@"0"]) {
-            str = array[3];
-            str2 = array[4];
-            
-            bstr = [NSString stringWithFormat:@"0x%@",str];
-            cstr = [NSString stringWithFormat:@"0x%@",str2];
-            
-            blue = strtoul([cstr UTF8String],0,0);
-            red = strtoul([bstr UTF8String],0,0);
-            
-        }
-        astr = [NSString stringWithFormat:@"0x%@",str1];
-        yellow = strtoul([astr UTF8String],0,0);
-        
-        if (MyWiFiMac) {
-            
-            [play setFreqs:freq freqCount:19];
-            
-            if ([array[5] isEqualToString:@"0"]){
-                
-                char mac[2] = {red,blue};
-                _mac = mac;
-                
-                NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-                _voiceTimesTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(startPlay:) userInfo:[NSNumber numberWithInt:2] repeats:YES] ;
-                [runLoop run];
-            }else{
-                
-                char mac[1] = {yellow};
-                _mac = mac;
-                
-                NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-                _voiceTimesTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(startPlay:) userInfo:[NSNumber numberWithInt:1] repeats:YES] ;
-                
-                [runLoop run];
-                
-                
-            }
-            
-        }
-        resolve(nil);
-    } else {
-        reject(@"ios_error", @"Not supported in iOS<11.0", nil);
+    //音波频率
+    int i;
+    freq = (int*)malloc(sizeof(int)*19);
+    freq[0] = 6500;
+    for (i = 0; i < 18; i++) {
+        freq[i + 1] = freq[i] + 200;
     }
 }
 
-- (NSDictionary*)constantsToExport {
-    // Officially better to use UIApplicationOpenSettingsURLString
-    return @{
-             @"settingsURL": @"App-Prefs:root=WIFI"
-             };
+-(void)VoiceThread
+{
+    play = [[VoiceEncoder alloc] init];
+    
+    
+    NSArray *array = [NSArray array];
+    array = [MyWiFiMac componentsSeparatedByString:@":"];
+    NSLog(@"array[4]:%@,array[5]%@",array[4],array[5]);
+    
+    NSString *str1 = [NSString string];
+    str1 = array[5];
+    
+    NSString *str = [NSString string];
+    NSString *str2 = [NSString string];
+    NSString *astr;
+    NSString *bstr;
+    NSString *cstr;
+    unsigned long red = 0;
+    unsigned long blue = 0;
+    unsigned long yellow;
+    
+    
+    if ([array[5] isEqualToString:@"0"]) {
+        str = array[3];
+        str2 = array[4];
+        
+        bstr = [NSString stringWithFormat:@"0x%@",str];
+        cstr = [NSString stringWithFormat:@"0x%@",str2];
+        
+        blue = strtoul([cstr UTF8String],0,0);
+        red = strtoul([bstr UTF8String],0,0);
+        
+    }
+    astr = [NSString stringWithFormat:@"0x%@",str1];
+    yellow = strtoul([astr UTF8String],0,0);
+    
+    if (MyWiFiMac) {
+        
+        [play setFreqs:freq freqCount:19];
+        
+        if ([array[5] isEqualToString:@"0"]){
+            
+            char mac[2] = {red,blue};
+            _mac = mac;
+            
+            NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+            _voiceTimesTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(startPlay:) userInfo:[NSNumber numberWithInt:2] repeats:YES] ;
+            [runLoop run];
+        }else{
+            
+            char mac[1] = {yellow};
+            _mac = mac;
+            
+            NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+            _voiceTimesTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(startPlay:) userInfo:[NSNumber numberWithInt:1] repeats:YES] ;
+            
+            [runLoop run];
+            
+            
+        }
+        
+    }
+    
+    
+}
+
+- (void)startPlay:(NSTimer *)aTimer {
+    @autoreleasepool {
+        
+        [play playWiFi:_mac macLen:1 pwd:MyPassword playCount:[[aTimer userInfo] integerValue] muteInterval:8000];
+        while (![play isStopped]) {
+            usleep(600*4000);
+        }
+        _times ++;
+        if (_times == 10) {
+            [_voiceTimesTimer invalidate];
+            _voiceTimesTimer = nil;
+            play = nil;
+            
+            [_voiceThread cancel];
+            [SmartLink StopSmartLink];
+        }
+    }
+}
+
+
+
+
+RCT_EXPORT_MODULE(WIFIMan);
+
+RCT_EXPORT_METHOD(list:(RCTResponseSenderBlock)callback) {
+    [self DidLoad];
+    NSArray *wifiList = @[MyWiFiSSID];
+    callback(@[[NSNull null], wifiList]);
+}
+
+RCT_EXPORT_METHOD(sendSonic:(NSString *)pwd) {
+    [self DidLoad];
+    MyPassword = pwd;
+    NSThread *playVoice = [[NSThread alloc]initWithTarget:self selector:@selector(PlayVoice) object:nil];
+    [playVoice start];
 }
 
 @end
-

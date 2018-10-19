@@ -1,13 +1,25 @@
-// Created by Rutger Bresjer on 10/10/2017
 
-// Notes:
-// - Be sure to enable "Hotspot Configuration" capability for the iOS target
-// - Make sure the NetworkExtension framework is linked to the target
+#if __has_include("RCTBridgeModule.h")
+#import "RCTBridgeModule.h"
+#else
+#import <React/RCTBridgeModule.h>
+#endif
 
-#import <Foundation/Foundation.h>
-#import <RCTBridgeModule.h>
+#import "voiceEncoder.h"
 
-@interface WifiManager : NSObject <RCTBridgeModule>
+@interface RNWifi : NSObject <RCTBridgeModule> {
+    NSInteger _times;
+    NSThread *_voiceThread;// 播放声波的子线程
+    NSString *MyPassword;
+    
+    NSString *MyWiFiMac;
+    NSString *MyWiFiSSID;
+    NSTimer *_voiceTimesTimer;//播放timer 用来循环播放
+    int *freq;
+    
+    char *_mac;//用来播放的数组
+    
+    VoiceEncoder *play;
+}
 
 @end
-
