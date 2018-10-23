@@ -601,7 +601,7 @@ public class RNWifiModule extends ReactContextBaseJavaModule {
 
      player.setFreqs(a);
 
-     int count = 10;
+     int count = 5;
 
      player.play(DataEncoder.encodeMacWiFi(b, wifi.trim()), count, 1000);
 
