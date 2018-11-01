@@ -1,21 +1,33 @@
 
 #import "RNWifi.h"
-#import <React/RCTLog.h>
-#import "SmartLink.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
+#import "voiceEncoder.h"
+#import "SmartLink.h"
+#import <Foundation/Foundation.h>
+#include <ifaddrs.h>
+#import "BoSmartLink.h"
+#include <ifaddrs.h>
+#include <arpa/inet.h>
+#import <ifaddrs.h>
+
+@interface RNWifi ()
+//@property(nonatomic, strong) RACCommand *startBoSmartCommand;  //博通
+@property(nonatomic,strong) NSTimer *SendBoSmartLinkTimer;
+@end
 
 @implementation RNWifi
 
--(void)PlayVoice
-{   _times = 0;//控制播放次数
-    NSThread *voiceThread = [[NSThread alloc]initWithTarget:self selector:@selector(VoiceThread) object:nil];
-    _voiceThread = voiceThread;
-    [voiceThread start];
+- (void)DidLoad {
+    //1.获取当前WIFI
+    [self GetCurrentWiFiSSID];
     
-    //smartLink
-    [SmartLink StopSmartLink];
-    [SmartLink setSmartLink:MyWiFiSSID setAuthmod:@"0" setPassWord:MyPassword];
-    
+    //音波频率
+    int i;
+    freq = (int*)malloc(sizeof(int)*19);
+    freq[0] = 6500;
+    for (i = 0; i < 18; i++) {
+        freq[i + 1] = freq[i] + 200;
+    }
     
 }
 
@@ -35,7 +47,7 @@
         }
     }
     
-    NSDictionary *dctySSID = (NSDictionary* )info;
+    NSDictionary *dctySSID = (NSDictionary *)info;
     NSString *ssid = [dctySSID objectForKey:@"SSID"];
     MyWiFiSSID =[[NSString alloc] initWithFormat:@"%@", ssid];
     
@@ -48,17 +60,47 @@
     return tempSSID;
 }
 
-- (void)DidLoad {
-    //1.获取当前WIFI
-    [self GetCurrentWiFiSSID];
+-(void)PlayVoice
+{   _times = 0;//控制播放次数
+    NSThread *voiceThread = [[NSThread alloc]initWithTarget:self selector:@selector(VoiceThread) object:nil];
+    _voiceThread = voiceThread;
+    [voiceThread start];
     
-    //音波频率
-    int i;
-    freq = (int*)malloc(sizeof(int)*19);
-    freq[0] = 6500;
-    for (i = 0; i < 18; i++) {
-        freq[i + 1] = freq[i] + 200;
-    }
+    //smartLink
+    [SmartLink StopSmartLink];
+    [SmartLink setSmartLink:MyWiFiSSID setAuthmod:@"0" setPassWord:MyPassword];
+    
+    struct in_addr addr;
+    inet_aton([[self getIPAddress] UTF8String], &addr);
+    ip = CFSwapInt32BigToHost(ntohl(addr.s_addr));
+    
+    
+    //    dispatch_async(dispatch_get_main_queue(), ^{
+    //        self.SendBoSmartLinkTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(StartCooee) userInfo:nil repeats:YES];
+    //        [[NSRunLoop currentRunLoop]addTimer:self.SendBoSmartLinkTimer forMode:NSRunLoopCommonModes];
+    //    });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //[self StartCooee];
+        self.SendBoSmartLinkTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(StartCooee) userInfo:nil repeats:YES];
+    });
+    //[BoSmartLink setBoSmartLink:MyWiFiSSID setLen:(int)strlen([MyWiFiSSID UTF8String]) setPassWord:MyWiFiPwd setPwdLen://(int)strlen([MyWiFiPwd UTF8String]) SetKey:@"" setKeyLen:0 SetIP:ip];
+    
+}
+
+-(void)StartCooee {
+    
+    struct in_addr addr;
+    inet_aton([[self getIPAddress] UTF8String], &addr);
+    ip = CFSwapInt32BigToHost(ntohl(addr.s_addr));
+    
+    NSLog(@"MyWiFiSSID %@",MyWiFiSSID);
+    NSLog(@"MyWiFiPwd %@",MyPassword);
+    
+    //NSLog(@"WIFISSID:%@,WIFILen:%d,WiFIPWD:%@,WIFIPwdLen:%d,IP:%@",MyWiFiSSID,(int)strlen([MyWiFiSSID UTF8String]),MyWiFiPwd,(int)strlen([MyWiFiPwd UTF8String]),ip);
+    
+    [BoSmartLink setBoSmartLink:MyWiFiSSID setLen:(int)strlen([MyWiFiSSID UTF8String]) setPassWord:MyPassword setPwdLen:(int)strlen([MyPassword UTF8String]) SetKey:@"" setKeyLen:0 SetIP:ip];
+    
+    
 }
 
 -(void)VoiceThread
@@ -146,8 +188,66 @@
     }
 }
 
+- (NSString *)getIPAddress
+{
+    NSString *address = @"error";
+    struct ifaddrs *interfaces = NULL;
+    struct ifaddrs *temp_addr = NULL;
+    int success = 0;
+    
+    // retrieve the current interfaces - returns 0 on success
+    success = getifaddrs(&interfaces);
+    if (success == 0)
+    {
+        // Loop through linked list of interfaces
+        temp_addr = interfaces;
+        while(temp_addr != NULL)
+        {
+            if(temp_addr->ifa_addr->sa_family == AF_INET)
+            {
+                // Check if interface is en0 which is the wifi connection on the iPhone
+                if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"])
+                {
+                    // Get NSString from C String
+                    address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
+                }
+            }
+            temp_addr = temp_addr->ifa_next;
+        }
+    }
+    
+    // Free memory
+    freeifaddrs(interfaces);
+    
+    return address;
+}
 
-
+-(void)StopVoice
+{
+    [play isStopped];
+    
+    play = nil;
+    
+    if ([_voiceTimesTimer isValid])
+    {
+        [_voiceTimesTimer invalidate];
+        _voiceTimesTimer = nil;
+    }
+    
+    if (_voiceThread)
+    {
+        [_voiceThread cancel];
+        _voiceThread = nil;
+    }
+    
+    [SmartLink StopSmartLink];
+    
+    [_SendBoSmartLinkTimer invalidate];
+    
+    _SendBoSmartLinkTimer = nil;
+    
+    
+}
 
 RCT_EXPORT_MODULE(WIFIMan);
 
@@ -160,8 +260,11 @@ RCT_EXPORT_METHOD(list:(RCTResponseSenderBlock)callback) {
 RCT_EXPORT_METHOD(sendSonic:(NSString *)pwd) {
     [self DidLoad];
     MyPassword = pwd;
-    NSThread *playVoice = [[NSThread alloc]initWithTarget:self selector:@selector(PlayVoice) object:nil];
-    [playVoice start];
+    [self PlayVoice];
+}
+
+RCT_EXPORT_METHOD(stopConnect) {
+    [self StopVoice];
 }
 
 @end

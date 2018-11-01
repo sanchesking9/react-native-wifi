@@ -7,9 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		871B12D72178B955006BAFB2 /* SmartLink copy.m in Sources */ = {isa = PBXBuildFile; fileRef = 871B12D32178B955006BAFB2 /* SmartLink copy.m */; };
-		871B12D82178B955006BAFB2 /* libiot copy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 871B12D42178B955006BAFB2 /* libiot copy.a */; };
-		871B12DA2178B97E006BAFB2 /* libVoiceEncoder copy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 871B12D92178B97E006BAFB2 /* libVoiceEncoder copy.a */; };
+		8792684C218B043900F5AA76 /* BoSmartLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 8792684B218B043900F5AA76 /* BoSmartLink.m */; };
+		87926851218B049600F5AA76 /* SmartLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 87926850218B049600F5AA76 /* SmartLink.m */; };
+		87926858218B0DFA00F5AA76 /* CocoaSmartDevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87926853218B052C00F5AA76 /* CocoaSmartDevice.framework */; };
+		87926859218B0DFA00F5AA76 /* libiot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8792684D218B046900F5AA76 /* libiot.a */; };
+		8792685A218B0DFA00F5AA76 /* libVoiceEncoder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 87926846218B013E00F5AA76 /* libVoiceEncoder.a */; };
+		8792688E218B103300F5AA76 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8792688D218B103300F5AA76 /* libcrypto.a */; };
+		87926890218B104000F5AA76 /* libcooee.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8792688F218B104000F5AA76 /* libcooee.a */; };
+		87926892218B108400F5AA76 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87926891218B108400F5AA76 /* NetworkExtension.framework */; };
 		B3E7B58A1CC2AC0600A0062D /* RNWifi.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNWifi.m */; };
 /* End PBXBuildFile section */
 
@@ -27,12 +32,19 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNWifi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNWifi.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		871B12D32178B955006BAFB2 /* SmartLink copy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SmartLink copy.m"; sourceTree = "<group>"; };
-		871B12D42178B955006BAFB2 /* libiot copy.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libiot copy.a"; sourceTree = "<group>"; };
-		871B12D52178B955006BAFB2 /* smtiot copy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "smtiot copy.h"; sourceTree = "<group>"; };
-		871B12D62178B955006BAFB2 /* SmartLink copy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SmartLink copy.h"; sourceTree = "<group>"; };
-		871B12D92178B97E006BAFB2 /* libVoiceEncoder copy.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libVoiceEncoder copy.a"; sourceTree = "<group>"; };
-		871B12DB2178B9AC006BAFB2 /* voiceEncoder copy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "voiceEncoder copy.h"; sourceTree = "<group>"; };
+		87926846218B013E00F5AA76 /* libVoiceEncoder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libVoiceEncoder.a; sourceTree = "<group>"; };
+		87926849218B03FB00F5AA76 /* cooee.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cooee.h; sourceTree = "<group>"; };
+		8792684A218B042300F5AA76 /* BoSmartLink.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoSmartLink.h; sourceTree = "<group>"; };
+		8792684B218B043900F5AA76 /* BoSmartLink.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoSmartLink.m; sourceTree = "<group>"; };
+		8792684D218B046900F5AA76 /* libiot.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libiot.a; sourceTree = "<group>"; };
+		8792684F218B048100F5AA76 /* SmartLink.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SmartLink.h; sourceTree = "<group>"; };
+		87926850218B049600F5AA76 /* SmartLink.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SmartLink.m; sourceTree = "<group>"; };
+		87926852218B04CD00F5AA76 /* smtiot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = smtiot.h; sourceTree = "<group>"; };
+		87926853218B052C00F5AA76 /* CocoaSmartDevice.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaSmartDevice.framework; sourceTree = "<group>"; };
+		87926856218B093300F5AA76 /* voiceEncoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voiceEncoder.h; sourceTree = "<group>"; };
+		8792688D218B103300F5AA76 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
+		8792688F218B104000F5AA76 /* libcooee.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcooee.a; sourceTree = "<group>"; };
+		87926891218B108400F5AA76 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		B3E7B5881CC2AC0600A0062D /* RNWifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNWifi.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RNWifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNWifi.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -42,8 +54,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				871B12D82178B955006BAFB2 /* libiot copy.a in Frameworks */,
-				871B12DA2178B97E006BAFB2 /* libVoiceEncoder copy.a in Frameworks */,
+				87926892218B108400F5AA76 /* NetworkExtension.framework in Frameworks */,
+				87926858218B0DFA00F5AA76 /* CocoaSmartDevice.framework in Frameworks */,
+				87926890218B104000F5AA76 /* libcooee.a in Frameworks */,
+				87926859218B0DFA00F5AA76 /* libiot.a in Frameworks */,
+				8792688E218B103300F5AA76 /* libcrypto.a in Frameworks */,
+				8792685A218B0DFA00F5AA76 /* libVoiceEncoder.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,24 +77,39 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				871B12DB2178B9AC006BAFB2 /* voiceEncoder copy.h */,
-				871B12D92178B97E006BAFB2 /* libVoiceEncoder copy.a */,
-				871B12D22178B92A006BAFB2 /* smartlink */,
+				87926856218B093300F5AA76 /* voiceEncoder.h */,
+				87926853218B052C00F5AA76 /* CocoaSmartDevice.framework */,
+				87926848218B03C900F5AA76 /* smartlink */,
+				87926846218B013E00F5AA76 /* libVoiceEncoder.a */,
 				B3E7B5881CC2AC0600A0062D /* RNWifi.h */,
 				B3E7B5891CC2AC0600A0062D /* RNWifi.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				87926857218B0DFA00F5AA76 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		871B12D22178B92A006BAFB2 /* smartlink */ = {
+		87926848218B03C900F5AA76 /* smartlink */ = {
 			isa = PBXGroup;
 			children = (
-				871B12D62178B955006BAFB2 /* SmartLink copy.h */,
-				871B12D52178B955006BAFB2 /* smtiot copy.h */,
-				871B12D42178B955006BAFB2 /* libiot copy.a */,
-				871B12D32178B955006BAFB2 /* SmartLink copy.m */,
+				8792684D218B046900F5AA76 /* libiot.a */,
+				87926849218B03FB00F5AA76 /* cooee.h */,
+				8792684A218B042300F5AA76 /* BoSmartLink.h */,
+				8792684B218B043900F5AA76 /* BoSmartLink.m */,
+				8792684F218B048100F5AA76 /* SmartLink.h */,
+				87926850218B049600F5AA76 /* SmartLink.m */,
+				87926852218B04CD00F5AA76 /* smtiot.h */,
 			);
 			name = smartlink;
+			sourceTree = "<group>";
+		};
+		87926857218B0DFA00F5AA76 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				87926891218B108400F5AA76 /* NetworkExtension.framework */,
+				8792688F218B104000F5AA76 /* libcooee.a */,
+				8792688D218B103300F5AA76 /* libcrypto.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,8 +168,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8792684C218B043900F5AA76 /* BoSmartLink.m in Sources */,
+				87926851218B049600F5AA76 /* SmartLink.m in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* RNWifi.m in Sources */,
-				871B12D72178B955006BAFB2 /* SmartLink copy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,6 +278,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_BITCODE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -266,6 +302,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_BITCODE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,

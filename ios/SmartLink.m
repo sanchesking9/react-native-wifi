@@ -8,7 +8,7 @@
 +(BOOL) setSmartLink:(NSString *) SSID setAuthmod:(NSString *) Authmod setPassWord:(NSString *)PassWord
 {
     //smartLink
-    const char *ssid = [SSID cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *ssid = [SSID UTF8String];
     const char *s_authmode = [Authmod cStringUsingEncoding:NSASCIIStringEncoding];
     int authmode = atoi(s_authmode);
     const char *password = [PassWord cStringUsingEncoding:NSUTF8StringEncoding];
@@ -21,7 +21,7 @@
 
 +(void)StopSmartLink
 {
-   StopSmartConnection();
+    StopSmartConnection();
 }
 
 @end
