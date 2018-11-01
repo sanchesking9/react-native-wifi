@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package com.mediatek.demo.smartconnection;
 
 import java.util.Arrays;
 import java.util.Collections;
