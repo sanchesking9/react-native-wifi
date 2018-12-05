@@ -48,22 +48,18 @@ public class RNWifiModule extends ReactContextBaseJavaModule {
         try {
             WifiManager mWifiManager = (WifiManager) getReactApplicationContext()
                     .getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-            if (mWifiManager.getWifiState() == mWifiManager.WIFI_STATE_ENABLED) {
-                mWifiManager.disconnect();
-                mWifiManager.reconnect();
-            } else {
+            if (mWifiManager.getWifiState() != mWifiManager.WIFI_STATE_ENABLED) {
                 mWifiManager.setWifiEnabled(true);
             }
 
             WritableArray wifiArray = Arguments.createArray();
             WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
             String wifiName = wifiInfo.getSSID();
-            if (wifiName.length() > 2 && wifiName.charAt(0) == '"'
-                    && wifiName.charAt(wifiName.length() - 1) == '"') {
-                wifiName = wifiName.substring(1, wifiName.length() - 1);
-            }
 
-            wifiArray.pushString(wifiName);
+            if(!wifiName.equals("<unknown ssid>")){
+                wifiName = wifiName.substring(1, wifiName.length() - 1);
+                wifiArray.pushString(wifiName);
+            }
 
             successCallback.invoke(wifiArray);
         } catch (IllegalViewOperationException e) {
